@@ -645,8 +645,11 @@ namespace BoletoNet
                 detalhe += "2"; //Posição 118  - Código do juros mora.
                 detalhe += Utils.FormatCode(boleto.DataVencimento.ToString("ddMMyyyy"), 8);  //Posição 119 a 126  - Data do Juros de Mora: preencher com a Data de Vencimento do Título
                 detalhe += Utils.FormatCode(boleto.JurosMora.ToString(), 15);   //Posição 127 a 141  - Data do Juros de Mora: preencher com a Data de Vencimento do Título
-                detalhe += "1"; //Posição 142  - Código do desconto
-                detalhe += Utils.FormatCode(boleto.DataDesconto.ToString("ddMMyyyy"), 8); //Posição 143 a 150  - Data do Desconto 1
+                detalhe += "0"; //Posição 142  - Código do desconto 
+
+                //Utils.FormatCode(boleto.DataDesconto.ToString("ddMMyyyy"), 8); //Posição 143 a 150  - Data do Desconto 1
+                detalhe += Utils.FitStringLength((boleto.DataDesconto == DateTime.MinValue ? "0" : boleto.DataDesconto.ToString("ddMMyyyy")), 8, 8, '0', 0, true, true, true); //Posição 143 a 150  - Data do Desconto 1
+
                 valorBoleto = boleto.ValorDesconto.ToString("f").Replace(",", "").Replace(".", "");
                 valorBoleto = Utils.FormatCode(valorBoleto, 15);  //Posição 151 a 165  - Valor/Percentual a ser Concedido
                 detalhe += valorBoleto;
@@ -726,8 +729,8 @@ namespace BoletoNet
                 detalhe += "R"; //Posição 014 Cód. Segmento do Registro Detalhe: "R"
                 detalhe += " ";  //Posição 015 Uso Exclusivo FEBRABAN/CNAB: Brancos
                 detalhe += "01"; //Posição 016 a 017       '01'  =  Entrada de Títulos
-                detalhe += "1"; //Posição 18  - Código do desconto
-                detalhe += Utils.FormatCode(boleto.DataOutrosDescontos.ToString("ddMMyyyy"), 8); //Posição 19 a 26  - Data do Desconto 2
+                detalhe += "0"; //Posição 18  - Código do desconto 0-"Código do Desconto 2 '0' = Não Conceder desconto ,'1' = Valor Fixo Até a Data Informada '2' = Percentual Até a Data Informada"
+                detalhe += Utils.FitStringLength((boleto.DataOutrosDescontos == DateTime.MinValue ? "0" : boleto.DataOutrosDescontos.ToString("ddMMyyyy")), 8, 8, '0', 0, true, true, true);  //Posição 19 a 26  - Data do Desconto 2
                 string valorDesconto2 = boleto.OutrosDescontos.ToString("f").Replace(",", "").Replace(".", "");
                 valorDesconto2 = Utils.FormatCode(valorDesconto2, 15);  // 
                 detalhe += valorDesconto2; //Posição 27 a 41   Valor/Percentual a ser Concedido
